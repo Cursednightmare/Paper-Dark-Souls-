@@ -1,0 +1,4 @@
+if skeleton.health <=0:
+      print("The" + skeleton.name + "has been slain.")
+    else:
+      continue 
