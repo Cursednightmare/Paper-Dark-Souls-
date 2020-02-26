@@ -23,7 +23,7 @@ class Entities:
     self.random_drop = random_drop
 
 drops_pool=["100 Coins", "Nothing", "Bone", "Nothing", "Health potion", "Nothing"]
-misc_items = random.randint(0,len(drops_pool))
+misc_items = random.choice(drops_pool)
 skeleton = Entities("Skeleton", "sword", 25, 100, misc_items)
 #print(skeleton.name, skeleton.health)
 
