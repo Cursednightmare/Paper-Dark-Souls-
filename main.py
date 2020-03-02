@@ -1,20 +1,42 @@
 import sys
 import random
+import copy
 try:
   import replit
   replit.clear()
 except Exception:
-  pass
+  pass 
 #exposition
-player_name= ""
-Action=""
+class Player:
+  def __init__(self, class_name, health, money, armor, weapon, misc_item):
+    self.class_name=class_name 
+    self.health=health
+    self.money=money
+    self.armor=armor
+    self.weapon=weapon
+    self.misc_items=misc_item
+
+classes=[
+  Player("Knight", 100, 300, "Broken Knight Plate", "Chipped Knight's Blade", ""), 
+  Player("Mage", 80, 300, "Cloth Robe", "Old Stick", "")
+]
+action=""
 player_class=""
 player_name = input("What is your name?\n >--")
+player_class = input("What class will you be?\n |K| Knight \n |M|Mage \n >--")
+if player_class == "K":
+  classes[0]
+elif action == "M":
+  classes[1]
+else:
+  print("")
+
 replit.clear()
-print(player_name+", The Knight ah yes I have forseen great things from you.")
+print(player_name + ", The " + Player.class_name + " ah yes I have forseen great things from you.")
+
 #we could put the introduction statement here 2/9/20
-#player_class = input("Now, how about you pick a class that will make that name great? \n Your choices are \n a Rookie Knight \n or an Worried Mage \n")
-class Entities:
+
+class Entity:
   def __init__(self, name, weapon, attacks, health, random_drop):
     self.name = name 
     self.weapon = weapon
@@ -24,17 +46,14 @@ class Entities:
 
 drops_pool=["100 Coins", "Nothing", "Bone", "Nothing", "Health potion", "Nothing"]
 misc_items = random.choice(drops_pool)
-skeleton = Entities("Skeleton", "sword", 25, 100, misc_items)
-#print(skeleton.name, skeleton.health)
 
-class Starting_Class:
-  class_name="Knight"
-  health=100
-  money=300 
-class Inventory:
-  armor="Armor: Broken Knight Plate"
-  weapon="Weapon: Chipped Knight's Blade"
-  misc_items="None"
+#enemy = Entity("Skeleton", "Sword", 25, 100, misc_items)
+enemies=[Entity("Skeleton", "Sword", 25, 100, misc_items), Entity("Zombie", "Sword", 25, 150, misc_items)]
+Entity = random.choice(enemies)
+
+
+#copy.deepcopy()
+
 class Room:
   room_name="Starting Room"
 class Attacks:
@@ -50,54 +69,55 @@ print("")
 while True:
   print("                               " + Room.room_name)
   print("========================================================================")
-  if skeleton.health <= 0:
+  
+  if Entity.health <= 0:
     print(misc_items)
-    print("The " + skeleton.name + " is dead.")
+    print("The " + Entity.name + " is dead.")
   else:
-    print("There's a " +  skeleton.name + " in the room with you and has " + str(skeleton.health) + " health.")
+    print("There's a " +  Entity.name + " in the room with you and has " + str(Entity.health) + " health.")
     print("")
-  Action=input("Press |A| for attack,\nPress |E| for inventory,\n|S| for character sheet \n|Q| to get moving on your journey. \n ")
-  if Action == "A" and skeleton.health > 0:
-    Action=input("What attack will you use against the " + skeleton.name +"? \n Press |1| To Slash [25] \n Press |2| For a Hilt Strike [15] \n Press |3| To make a quick stab [20]\n")
-    if Action == "1" and skeleton.health > 0:
+  action=input("Press |A| for attack,\nPress |E| for inventory,\n|S| for character sheet \n|Q| to get moving on your journey. \n ")
+  if action == "A" and Entity.health > 0:
+    action=input("What attack will you use against the " + Entity.name +"? \n Press |1| To Slash [25] \n Press |2| For a Hilt Strike [15] \n Press |3| To make a quick stab [20]\n")
+    if action == "1":
       replit.clear()
       print("Bop")
-      skeleton.health=skeleton.health-50
-    elif Action == "2" and skeleton.health > 0:
+      Entity.health=Entity.health-50
+    elif action == "2":
       replit.clear()
       print("Wham")
-      skeleton.health=skeleton.health-15
-    elif Action == "3" and skeleton.health > 0:
+      Entity.health=Entity.health-15
+    elif action == "3":
       replit.clear()
       print("Pow")
-      skeleton.health=skeleton.health-20
+      Entity.health=Entity.health-20
     else:
       replit.clear()
       print("Wat?")
     print("\n")
-  elif Action == "S":
+  elif action == "S":
     replit.clear()
-    print("Class:"+Starting_Class.class_name)
-    print("HP:"+ str(Starting_Class.health))
-    print("Money:"+ str(Starting_Class.money))
-    print(Inventory.armor)
-    print(Inventory.weapon)
-    Starting_Class.health = Starting_Class.health-25 
-  elif Action == "E":
+    print("Class:"+knight.class_name)
+    print("HP:"+ str(knight.health))
+    print("Money:"+ str(knight.money))
+    print(knight.armor)
+    print(knight.weapon)
+    knight.health = knight.health-25 
+  elif action == "E":
     replit.clear()
-    print(Inventory.armor)
-    print(Inventory.weapon)
-    print(Inventory.misc_items)
-  elif Action == "Q":
+    print(knight.armor)
+    print(knight.weapon)
+    print(knight.misc_items)
+  elif action == "Q":
     replit.clear()
     print("Alright lets get moving") 
     print("At the end of the room there's a door you enter through that door and enter into the next room.")
-  elif Action == 'Quit':
+  elif action == 'Quit':
     break
   else:
-    if skeleton.health <= 0 and Action =="A":
+    if Entity.health <= 0 and action =="A":
       replit.clear()
-      print("The skeleton is already dead.....")
+      print("The " + Entity.name + " is already dead.....")
     else:
       replit.clear()
       print("Wat?")

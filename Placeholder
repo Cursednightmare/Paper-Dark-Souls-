@@ -2,3 +2,18 @@ if skeleton.health <=0:
       print("The" + skeleton.name + "has been slain.")
     else:
       continue 
+classes
+class Starting_Class:
+  class_name="Knight"
+  health=100
+  money=300 
+class Inventory:
+  armor="Armor: Broken Knight Plate"
+  weapon="Weapon: Chipped Knight's Blade"
+  misc_items="None"
+
+
+classes=[
+  Player("Knight", 100, 300, "Broken Knight Plate", "Chipped Knight's Blade", ""), 
+  Player("Mage", 80, 300, "Cloth Robe", "Old Stick", "")
+]
