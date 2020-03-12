@@ -11,10 +11,22 @@ except Exception:
 
 
 class Room:
-  def __init__(self, name, enemy, rnd_loot,):
+  def __init__(self, name, enemy, loot):
     self.name=name
     self.enemy=enemy  
-    self.rnd_loot=rnd_loot 
+    self.loot=loot
+
+class Item:
+  def __init__(self, name, effect):
+    self.name=name 
+    self.effect=effect
+
+class GoldSack:
+  def __init__(self, amt_money,):
+    self.amt_money= amt_money
+
+
+
 
 class Attack:
   def __init__(self, name, damage):
@@ -28,14 +40,15 @@ class Player:
     self.money=money
     self.armor=armor
     self.weapon=weapon
-    self.misc_items=[]
+    self.misc_items=misc_items 
     self.attacks=attacks
 
 
 classes=[
-  Player("Knight", 100, 300, "Broken Knight Plate", "Chipped Knight's Blade", "",[Attack("Slash", 50)]),
-  Player("Mage", 80, 300, "Cloth Robe", "Old Stick", "", [Attack("Boop", 50)])
+  Player("Knight", 100, 300, "Broken Knight Plate", "Chipped Knight's Blade", ["Health Potion"],[Attack("Slash", 50)]),
+  Player("Mage", 80, 300, "Cloth Robe", "Old Stick", ["Health Potion"], [Attack("Magic Blast", 50)])
 ]
+
 
 class Enemy:
   def __init__(self, name, weapon, attacks, health, random_drop):
@@ -45,16 +58,17 @@ class Enemy:
     self.health = health
     self.random_drop = random_drop
     
-drops_pool=["100 Coins", "Nothing", "Bone", "Nothing", "Health potion", "Nothing"]
-misc_items=random.choice(drops_pool)
+drops_pool=[Item("100 Coins"," "), Item("Bone",""), Item("Health potion", "")]
+random_drop=random.choice(drops_pool)
 
 
-
-enemies=[Enemy("Skeleton", "Sword", [Attack("Stab", 20), Attack("Slap", 25)], 100, misc_items), 
-Enemy("Zombie", "Sword", [Attack("Hit", 15)], 150, misc_items)
+enemies=[Enemy("Skeleton", "Sword", [Attack("Stab", 20), Attack("Slap", 25)], 100, random_drop), 
+Enemy("Zombie", "Sword", [Attack("Hit", 15)], 100, random_drop)
 ]
 
 enemy = random.choice(enemies)
+
+rooms=[Room("Starting room", enemy, ["Chest"])]
 
 player_name = input("What is your name?\n >--")
 while True:
@@ -77,19 +91,19 @@ print(player_name + ", The " + player.class_name + " ah yes I have forseen great
 #copy.deepcopy()
 
 #Introduction story would be here
-Room.name = "Starting Room"
+current_room=rooms[0]
 print("")
 while True:
-  print("                               " + Room.name)
+  print("                               " + current_room.name)
   print("===========================================================================")
   
-  if enemy.health <= 0:
-    print("The enemy dropped: " + misc_items)
-    print("The " + enemy.name + " is dead.")
+  if current_room.enemy.health <= 0:
+    print("The enemy dropped: " + str(enemy.random_drop))
+    print("The " + current_room.enemy.name + " is dead.")
   else:
-    print("There's a " +  enemy.name + " in the room with you and has " + str(enemy.health) + " health.")
+    print("There's a " +  current_room.enemy.name + " in the room with you and has " + str(current_room.enemy.health) + " health.\nThere is also a " + current_room.loot[0] + " on the ground.")
     print("")
-  action=input("Press |A| for attack,\nPress |E| for misc_items,\n|S| for character sheet \n|Q| to get moving on your journey. \n|P| to pick up items on the ground \n>--")
+  action=input("Press |A| for attack,\nPress |E| for inventory,\n|S| for character sheet \n|Q| to get moving on your journey. \n|P| to pick up items on the ground from the enemy \n>--")
   if action == "A" and enemy.health > 0:
     action=input("What attack will you use against the " + enemy.name +"? \n Press |1| To Slash [25] \n Press |2| For a Hilt Strike [15] \n Press |3| To make a quick stab [20]\n")
     if action == "1":
@@ -118,17 +132,19 @@ while True:
     player.health = player.health-25 
   elif action == "E":
     replit.clear()
-    print(player.armor)
-    print(player.weapon)
     print(player.misc_items)
   elif action == "Q":
     replit.clear()
     print("Alright lets get moving") 
     print("At the end of the room there's a door you enter through that door and enter into the next room.")
-  elif action == "P":
+  elif action == "P" and enemy.health <=0:
     replit.clear()
     print("You have picked up the following")
-    #IDK 
+    if enemy.random_drop == "100 Gold":
+      player.money=player.money+enemy.random_drop 
+      print("D")
+    else:
+      player.misc_items.append 
   elif action == 'Quit':
     break
   else:
